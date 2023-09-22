@@ -1,0 +1,20 @@
+#!/bin/bash
+
+for i in {4,8,16,32,64,128,256,512}
+do
+    for j in {0,1,2}
+    do
+        python ./pycharm-vllm/main.py ${i} ${j} > ./batch_seq/${i}_${j}.txt
+        if [ $? -ne 0 ]
+        then
+            echo "python error"
+            break
+        fi
+    done
+    if [ $? -ne 0 ]
+    then
+        break
+    fi
+done
+
+python ./pycharm-vllm/cpu2gpu.py > ./batch_seq/cpu2gpu.txt
